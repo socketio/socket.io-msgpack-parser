@@ -5,12 +5,12 @@
   "main": "index.js",
   "dependencies": {
     "component-emitter": "1.2.1",
+    "msgpack-js-browser": "^0.1.4",
     "notepack.io": "~1.0.1"
   },
   "devDependencies": {
     "expect.js": "0.3.1",
     "mocha": "3.2.0",
-    "msgpack-js-browser": "^0.1.4",
     "semistandard": "9.2.1",
     "socket.io": "github:socketio/socket.io",
     "socket.io-client": "github:socketio/socket.io-client"
