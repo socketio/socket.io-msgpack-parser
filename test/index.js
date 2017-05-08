@@ -1,6 +1,6 @@
 /* eslint-env mocha */
 
-const customParser = require('../index.js');
+const customParser = require('..');
 const expect = require('expect.js');
 const io = require('socket.io');
 const ioc = require('socket.io-client');

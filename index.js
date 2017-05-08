@@ -61,5 +61,4 @@ class Decoder extends Emitter {
   destroy () {}
 }
 
-exports.Encoder = Encoder;
-exports.Decoder = Decoder;
+module.exports = { Encoder, Decoder };
