@@ -2,15 +2,12 @@
   "name": "socket.io-msgpack-parser",
   "version": "2.0.0",
   "description": "socket.io parser based on msgpack",
-  "main": "dist/index",
+  "main": "index",
   "dependencies": {
     "component-emitter": "1.2.1",
-    "msgpack-js-browser": "^0.1.4",
-    "notepack.io": "~1.0.1"
+    "notepack.io": "~2.0.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-preset-es2015": "^6.24.1",
     "expect.js": "0.3.1",
     "mocha": "3.2.0",
     "semistandard": "9.2.1",
@@ -19,9 +16,7 @@
   },
   "scripts": {
     "lint": "semistandard",
-    "build": "npm run lint && babel index.js --out-dir dist",
-    "test": "npm run build && mocha test/index.js",
-    "prepublish": "npm run build"
+    "test": "npm run lint && mocha test/index.js"
   },
   "repository": {
     "type": "git",
@@ -34,10 +29,6 @@
   },
   "homepage": "https://github.com/darrachequesne/socket.io-msgpack-parser#readme",
   "files": [
-    "index.js",
-    "dist"
-  ],
-  "browser": {
-    "notepack.io": "msgpack-js-browser"
-  }
+    "index.js"
+  ]
 }
