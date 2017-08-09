@@ -5,7 +5,7 @@
   "main": "index",
   "dependencies": {
     "component-emitter": "1.2.1",
-    "notepack.io": "~2.0.0"
+    "notepack.io": "~2.1.0"
   },
   "devDependencies": {
     "expect.js": "0.3.1",
