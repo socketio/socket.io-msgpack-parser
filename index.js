@@ -14,10 +14,13 @@ exports.ERROR = 4;
 exports.BINARY_EVENT = 5;
 exports.BINARY_ACK = 6;
 
-var errorPacket = {
-  type: exports.ERROR,
-  data: 'parser error'
+var isInteger = Number.isInteger || function (value) {
+  return typeof value === 'number' &&
+    isFinite(value) &&
+    Math.floor(value) === value;
 };
+
+var isString = function (value) { return typeof value === 'string'; };
 
 function Encoder () {}
 
@@ -45,20 +48,46 @@ Decoder.prototype.add = function (obj) {
 };
 
 Decoder.prototype.parseJSON = function (obj) {
-  try {
-    var decoded = JSON.parse(obj);
-    this.emit('decoded', decoded);
-  } catch (e) {
-    this.emit('decoded', errorPacket);
-  }
+  var decoded = JSON.parse(obj);
+  this.checkPacket(decoded);
+  this.emit('decoded', decoded);
 };
 
 Decoder.prototype.parseBinary = function (obj) {
-  try {
-    var decoded = msgpack.decode(obj);
-    this.emit('decoded', decoded);
-  } catch (e) {
-    this.emit('decoded', errorPacket);
+  var decoded = msgpack.decode(obj);
+  this.checkPacket(decoded);
+  this.emit('decoded', decoded);
+};
+
+function isDataValid (decoded) {
+  switch (decoded.type) {
+    case exports.CONNECT:
+    case exports.DISCONNECT:
+      return decoded.data === undefined;
+    case exports.ERROR:
+      return isString(decoded.data);
+    default:
+      return Array.isArray(decoded.data);
+  }
+}
+
+Decoder.prototype.checkPacket = function (decoded) {
+  var isTypeValid = isInteger(decoded.type) && decoded.type >= exports.CONNECT && decoded.type <= exports.BINARY_ACK;
+  if (!isTypeValid) {
+    throw new Error('invalid packet type');
+  }
+
+  if (!isString(decoded.nsp)) {
+    throw new Error('invalid namespace');
+  }
+
+  if (!isDataValid(decoded)) {
+    throw new Error('invalid payload');
+  }
+
+  var isAckValid = decoded.id === undefined || isInteger(decoded.id);
+  if (!isAckValid) {
+    throw new Error('invalid packet id');
   }
 };
 

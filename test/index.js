@@ -112,4 +112,25 @@ describe('parser', () => {
       done();
     });
   });
+
+  it('throws an error upon invalid format', () => {
+    const decoder = new customParser.Decoder();
+
+    expect(() => decoder.add('{')).to.throwError(/Unexpected end of JSON input/);
+    expect(() => decoder.add(Buffer.from([]))).to.throwError(/Could not parse/);
+
+    expect(() => decoder.add('{}')).to.throwError(/invalid packet type/);
+    expect(() => decoder.add('{"type":"a"}')).to.throwError(/invalid packet type/);
+    expect(() => decoder.add('{"type":7}')).to.throwError(/invalid packet type/);
+    expect(() => decoder.add(Buffer.from([1]))).to.throwError(/invalid packet type/);
+
+    expect(() => decoder.add('{"type":2}')).to.throwError(/invalid namespace/);
+    expect(() => decoder.add('{"type":2,"nsp":2}')).to.throwError(/invalid namespace/);
+
+    expect(() => decoder.add('{"type":2,"nsp":"/"}')).to.throwError(/invalid payload/);
+    expect(() => decoder.add('{"type":2,"nsp":"/","data":4}')).to.throwError(/invalid payload/);
+    expect(() => decoder.add('{"type":4,"nsp":"/","data":[]}')).to.throwError(/invalid payload/);
+
+    expect(() => decoder.add('{"type":2,"nsp":"/","data":[],"id":"a"}')).to.throwError(/invalid packet id/);
+  });
 });
