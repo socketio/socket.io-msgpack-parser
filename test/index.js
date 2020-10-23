@@ -14,7 +14,11 @@ describe("parser", () => {
     });
 
     server.on("connect", (socket) => {
-      socket.on("hello", done);
+      socket.on("hello", () => {
+        client.close();
+        server.close();
+        done();
+      });
     });
 
     const client = ioc("ws://localhost:" + PORT, {
@@ -37,6 +41,8 @@ describe("parser", () => {
         expect(arg1).to.eql([]);
         expect(arg2).to.eql({ a: "b" });
         expect(Buffer.isBuffer(arg3)).to.be(true);
+        client.close();
+        server.close();
         done();
       });
     });
@@ -70,6 +76,8 @@ describe("parser", () => {
     client.on("connect", () => {
       client.emit("ack", "question", (answer) => {
         expect(answer).to.eql(42);
+        client.close();
+        server.close();
         done();
       });
     });
@@ -82,7 +90,11 @@ describe("parser", () => {
     });
 
     server.of("/chat").on("connect", (socket) => {
-      socket.on("hi", done);
+      socket.on("hi", () => {
+        client.close();
+        server.close();
+        done();
+      });
     });
 
     const client = ioc("ws://localhost:" + PORT + "/chat", {
@@ -110,6 +122,8 @@ describe("parser", () => {
 
     client.on("hey", (arg1) => {
       expect(arg1).to.eql("you");
+      client.close();
+      server.close();
       done();
     });
   });
