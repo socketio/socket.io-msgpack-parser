@@ -1,17 +1,19 @@
 var msgpack = require("notepack.io");
 var Emitter = require("component-emitter");
 
+exports.protocol = 5;
+
 /**
  * Packet types (see https://github.com/socketio/socket.io-protocol)
  */
 
-exports.CONNECT = 0;
-exports.DISCONNECT = 1;
-exports.EVENT = 2;
-exports.ACK = 3;
-exports.ERROR = 4;
-exports.BINARY_EVENT = 5;
-exports.BINARY_ACK = 6;
+var PacketType = (exports.PacketType = {
+  CONNECT: 0,
+  DISCONNECT: 1,
+  EVENT: 2,
+  ACK: 3,
+  ERROR: 4,
+});
 
 var isInteger =
   Number.isInteger ||
@@ -29,15 +31,8 @@ var isString = function (value) {
 
 function Encoder() {}
 
-Encoder.prototype.encode = function (packet, callback) {
-  switch (packet.type) {
-    case exports.CONNECT:
-    case exports.DISCONNECT:
-    case exports.ERROR:
-      return callback([JSON.stringify(packet)]);
-    default:
-      return callback([msgpack.encode(packet)]);
-  }
+Encoder.prototype.encode = function (packet) {
+  return [msgpack.encode(packet)];
 };
 
 function Decoder() {}
@@ -45,20 +40,6 @@ function Decoder() {}
 Emitter(Decoder.prototype);
 
 Decoder.prototype.add = function (obj) {
-  if (typeof obj === "string") {
-    this.parseJSON(obj);
-  } else {
-    this.parseBinary(obj);
-  }
-};
-
-Decoder.prototype.parseJSON = function (obj) {
-  var decoded = JSON.parse(obj);
-  this.checkPacket(decoded);
-  this.emit("decoded", decoded);
-};
-
-Decoder.prototype.parseBinary = function (obj) {
   var decoded = msgpack.decode(obj);
   this.checkPacket(decoded);
   this.emit("decoded", decoded);
@@ -66,10 +47,11 @@ Decoder.prototype.parseBinary = function (obj) {
 
 function isDataValid(decoded) {
   switch (decoded.type) {
-    case exports.CONNECT:
-    case exports.DISCONNECT:
+    case PacketType.CONNECT:
+      return decoded.data === undefined || typeof decoded.data === "object";
+    case PacketType.DISCONNECT:
       return decoded.data === undefined;
-    case exports.ERROR:
+    case PacketType.ERROR:
       return isString(decoded.data);
     default:
       return Array.isArray(decoded.data);
@@ -79,8 +61,8 @@ function isDataValid(decoded) {
 Decoder.prototype.checkPacket = function (decoded) {
   var isTypeValid =
     isInteger(decoded.type) &&
-    decoded.type >= exports.CONNECT &&
-    decoded.type <= exports.BINARY_ACK;
+    decoded.type >= PacketType.CONNECT &&
+    decoded.type <= PacketType.ERROR;
   if (!isTypeValid) {
     throw new Error("invalid packet type");
   }

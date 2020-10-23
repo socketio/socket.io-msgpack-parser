@@ -4,6 +4,7 @@ const customParser = require("..");
 const expect = require("expect.js");
 const io = require("socket.io");
 const ioc = require("socket.io-client");
+const msgpack = require("notepack.io");
 
 describe("parser", () => {
   it("allows connection", (done) => {
@@ -116,39 +117,27 @@ describe("parser", () => {
   it("throws an error upon invalid format", () => {
     const decoder = new customParser.Decoder();
 
-    expect(() => decoder.add("{")).to.throwError(
-      /Unexpected end of JSON input/
-    );
-    expect(() => decoder.add(Buffer.from([]))).to.throwError(/Could not parse/);
+    const test = (input, expectedError) => {
+      expect(() => decoder.add(input)).to.throwError(expectedError);
+    };
 
-    expect(() => decoder.add("{}")).to.throwError(/invalid packet type/);
-    expect(() => decoder.add('{"type":"a"}')).to.throwError(
-      /invalid packet type/
-    );
-    expect(() => decoder.add('{"type":7}')).to.throwError(
-      /invalid packet type/
-    );
-    expect(() => decoder.add(Buffer.from([1]))).to.throwError(
-      /invalid packet type/
-    );
+    test(Buffer.from([]), /Could not parse/);
 
-    expect(() => decoder.add('{"type":2}')).to.throwError(/invalid namespace/);
-    expect(() => decoder.add('{"type":2,"nsp":2}')).to.throwError(
-      /invalid namespace/
-    );
+    test(msgpack.encode({}), /invalid packet type/);
+    test(msgpack.encode({ type: "a" }), /invalid packet type/);
+    test(msgpack.encode({ type: 7 }), /invalid packet type/);
+    test(msgpack.encode(Buffer.from([1])), /invalid packet type/);
 
-    expect(() => decoder.add('{"type":2,"nsp":"/"}')).to.throwError(
-      /invalid payload/
-    );
-    expect(() => decoder.add('{"type":2,"nsp":"/","data":4}')).to.throwError(
-      /invalid payload/
-    );
-    expect(() => decoder.add('{"type":4,"nsp":"/","data":[]}')).to.throwError(
-      /invalid payload/
-    );
+    test(msgpack.encode({ type: 2 }), /invalid namespace/);
+    test(msgpack.encode({ type: 2, nsp: 2 }), /invalid namespace/);
 
-    expect(() =>
-      decoder.add('{"type":2,"nsp":"/","data":[],"id":"a"}')
-    ).to.throwError(/invalid packet id/);
+    test(msgpack.encode({ type: 2, nsp: "/" }), /invalid payload/);
+    test(msgpack.encode({ type: 2, nsp: "/", data: 4 }), /invalid payload/);
+    test(msgpack.encode({ type: 4, nsp: "/", data: [] }), /invalid payload/);
+
+    test(
+      msgpack.encode({ type: 2, nsp: "/", data: [], id: "a" }),
+      /invalid packet id/
+    );
   });
 });
