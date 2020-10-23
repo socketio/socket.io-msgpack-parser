@@ -10,13 +10,14 @@
   "devDependencies": {
     "expect.js": "0.3.1",
     "mocha": "3.2.0",
-    "semistandard": "9.2.1",
+    "prettier": "^2.1.2",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0"
   },
   "scripts": {
-    "lint": "semistandard",
-    "test": "npm run lint && mocha test/index.js"
+    "format:check": "prettier --check 'index.js' 'test/**/*.js'",
+    "format:fix": "prettier --write 'index.js' 'test/**/*.js'",
+    "test": "npm run format:check && mocha test/index.js"
   },
   "repository": {
     "type": "git",
