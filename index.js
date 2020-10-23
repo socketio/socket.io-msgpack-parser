@@ -1,6 +1,5 @@
-
-var msgpack = require('notepack.io');
-var Emitter = require('component-emitter');
+var msgpack = require("notepack.io");
+var Emitter = require("component-emitter");
 
 /**
  * Packet types (see https://github.com/socketio/socket.io-protocol)
@@ -14,33 +13,39 @@ exports.ERROR = 4;
 exports.BINARY_EVENT = 5;
 exports.BINARY_ACK = 6;
 
-var isInteger = Number.isInteger || function (value) {
-  return typeof value === 'number' &&
-    isFinite(value) &&
-    Math.floor(value) === value;
+var isInteger =
+  Number.isInteger ||
+  function (value) {
+    return (
+      typeof value === "number" &&
+      isFinite(value) &&
+      Math.floor(value) === value
+    );
+  };
+
+var isString = function (value) {
+  return typeof value === "string";
 };
 
-var isString = function (value) { return typeof value === 'string'; };
-
-function Encoder () {}
+function Encoder() {}
 
 Encoder.prototype.encode = function (packet, callback) {
   switch (packet.type) {
     case exports.CONNECT:
     case exports.DISCONNECT:
     case exports.ERROR:
-      return callback([ JSON.stringify(packet) ]);
+      return callback([JSON.stringify(packet)]);
     default:
-      return callback([ msgpack.encode(packet) ]);
+      return callback([msgpack.encode(packet)]);
   }
 };
 
-function Decoder () {}
+function Decoder() {}
 
 Emitter(Decoder.prototype);
 
 Decoder.prototype.add = function (obj) {
-  if (typeof obj === 'string') {
+  if (typeof obj === "string") {
     this.parseJSON(obj);
   } else {
     this.parseBinary(obj);
@@ -50,16 +55,16 @@ Decoder.prototype.add = function (obj) {
 Decoder.prototype.parseJSON = function (obj) {
   var decoded = JSON.parse(obj);
   this.checkPacket(decoded);
-  this.emit('decoded', decoded);
+  this.emit("decoded", decoded);
 };
 
 Decoder.prototype.parseBinary = function (obj) {
   var decoded = msgpack.decode(obj);
   this.checkPacket(decoded);
-  this.emit('decoded', decoded);
+  this.emit("decoded", decoded);
 };
 
-function isDataValid (decoded) {
+function isDataValid(decoded) {
   switch (decoded.type) {
     case exports.CONNECT:
     case exports.DISCONNECT:
@@ -72,22 +77,25 @@ function isDataValid (decoded) {
 }
 
 Decoder.prototype.checkPacket = function (decoded) {
-  var isTypeValid = isInteger(decoded.type) && decoded.type >= exports.CONNECT && decoded.type <= exports.BINARY_ACK;
+  var isTypeValid =
+    isInteger(decoded.type) &&
+    decoded.type >= exports.CONNECT &&
+    decoded.type <= exports.BINARY_ACK;
   if (!isTypeValid) {
-    throw new Error('invalid packet type');
+    throw new Error("invalid packet type");
   }
 
   if (!isString(decoded.nsp)) {
-    throw new Error('invalid namespace');
+    throw new Error("invalid namespace");
   }
 
   if (!isDataValid(decoded)) {
-    throw new Error('invalid payload');
+    throw new Error("invalid payload");
   }
 
   var isAckValid = decoded.id === undefined || isInteger(decoded.id);
   if (!isAckValid) {
-    throw new Error('invalid packet id');
+    throw new Error("invalid packet id");
   }
 };
 
