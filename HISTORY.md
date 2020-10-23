@@ -1,3 +1,12 @@
+# [3.0.0](https://github.com/darrachequesne/socket.io-msgpack-parser/compare/2.2.1...3.0.0) (2020-10-23)
+
+
+### Features
+
+* implement Socket.IO protocol v5 ([#3](https://github.com/darrachequesne/socket.io-msgpack-parser/issues/3)) ([2e72611](https://github.com/darrachequesne/socket.io-msgpack-parser/commit/2e726111437e6f744529fb00afae3afd9497e6d8))
+
+
+
 ## [2.2.1](https://github.com/darrachequesne/socket.io-msgpack-parser/compare/2.2.0...2.2.1) (2020-09-28)
 
 

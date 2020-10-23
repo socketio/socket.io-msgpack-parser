@@ -12,6 +12,13 @@ See also:
 - the default parser: https://github.com/socketio/socket.io-parser
 - a parser based on JSON.stringify/parse: https://github.com/darrachequesne/socket.io-json-parser
 
+Compatibility table:
+
+| Parser version | Socket.IO server version |
+|----------------| ------------------------ |
+| 2.x.x          | 1.x.x / 2.x.x            |
+| 3.x.x          | 3.x.x                    |
+
 ## Usage
 
 ```js
