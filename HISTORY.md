@@ -1,3 +1,7 @@
+## [3.0.1](https://github.com/darrachequesne/socket.io-msgpack-parser/compare/3.0.0...3.0.1) (2020-10-27)
+
+
+
 # [3.0.0](https://github.com/darrachequesne/socket.io-msgpack-parser/compare/2.2.1...3.0.0) (2020-10-23)
 
 
