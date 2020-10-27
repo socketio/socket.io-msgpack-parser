@@ -12,7 +12,7 @@ var PacketType = (exports.PacketType = {
   DISCONNECT: 1,
   EVENT: 2,
   ACK: 3,
-  ERROR: 4,
+  CONNECT_ERROR: 4,
 });
 
 var isInteger =
@@ -27,6 +27,10 @@ var isInteger =
 
 var isString = function (value) {
   return typeof value === "string";
+};
+
+var isObject = function (value) {
+  return Object.prototype.toString.call(value) === "[object Object]";
 };
 
 function Encoder() {}
@@ -48,11 +52,11 @@ Decoder.prototype.add = function (obj) {
 function isDataValid(decoded) {
   switch (decoded.type) {
     case PacketType.CONNECT:
-      return decoded.data === undefined || typeof decoded.data === "object";
+      return decoded.data === undefined || isObject(decoded.data);
     case PacketType.DISCONNECT:
       return decoded.data === undefined;
-    case PacketType.ERROR:
-      return isString(decoded.data);
+    case PacketType.CONNECT_ERROR:
+      return isString(decoded.data) || isObject(decoded.data);
     default:
       return Array.isArray(decoded.data);
   }
@@ -62,7 +66,7 @@ Decoder.prototype.checkPacket = function (decoded) {
   var isTypeValid =
     isInteger(decoded.type) &&
     decoded.type >= PacketType.CONNECT &&
-    decoded.type <= PacketType.ERROR;
+    decoded.type <= PacketType.CONNECT_ERROR;
   if (!isTypeValid) {
     throw new Error("invalid packet type");
   }

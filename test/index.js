@@ -83,7 +83,7 @@ describe("parser", () => {
     });
   });
 
-  it("supports non-default namespace", (done) => {
+  it("supports multiplexing", (done) => {
     const PORT = 54003;
     const server = io(PORT, {
       parser: customParser,
@@ -103,6 +103,28 @@ describe("parser", () => {
 
     client.on("connect", () => {
       client.emit("hi");
+    });
+  });
+
+  it("supports namespace error", (done) => {
+    const PORT = 54003;
+    const server = io(PORT, {
+      parser: customParser,
+    });
+
+    server.use((socket, next) => {
+      next(new Error("invalid"));
+    });
+
+    const client = ioc("ws://localhost:" + PORT, {
+      parser: customParser,
+    });
+
+    client.on("connect_error", (err) => {
+      expect(err).to.eql("invalid");
+      client.close();
+      server.close();
+      done();
     });
   });
 
