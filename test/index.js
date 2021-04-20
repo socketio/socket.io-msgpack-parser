@@ -107,7 +107,7 @@ describe("parser", () => {
   });
 
   it("supports namespace error", (done) => {
-    const PORT = 54003;
+    const PORT = 54004;
     const server = io(PORT, {
       parser: customParser,
     });
@@ -121,7 +121,7 @@ describe("parser", () => {
     });
 
     client.on("connect_error", (err) => {
-      expect(err).to.eql("invalid");
+      expect(err.message).to.eql("invalid");
       client.close();
       server.close();
       done();
@@ -129,7 +129,7 @@ describe("parser", () => {
   });
 
   it("supports broadcasting", (done) => {
-    const PORT = 54004;
+    const PORT = 54005;
     const server = io(PORT, {
       parser: customParser,
     });

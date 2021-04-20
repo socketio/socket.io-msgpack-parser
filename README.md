@@ -16,8 +16,8 @@ Compatibility table:
 
 | Parser version | Socket.IO server version |
 |----------------| ------------------------ |
-| 2.x.x          | 1.x.x / 2.x.x            |
-| 3.x.x          | 3.x.x                    |
+| 2.x            | 1.x / 2.x                |
+| 3.x            | 3.x / 4.x                |
 
 ## Usage
 

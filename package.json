@@ -11,8 +11,8 @@
     "expect.js": "0.3.1",
     "mocha": "^8.2.0",
     "prettier": "^2.1.2",
-    "socket.io": "^3.0.0-rc3",
-    "socket.io-client": "^3.0.0-rc3"
+    "socket.io": "^4.0.1",
+    "socket.io-client": "^4.0.1"
   },
   "scripts": {
     "format:check": "prettier --check 'index.js' 'test/**/*.js'",
