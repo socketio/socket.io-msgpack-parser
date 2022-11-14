@@ -21,14 +21,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/darrachequesne/socket.io-msgpack-parser.git"
+    "url": "git+https://github.com/socketio/socket.io-msgpack-parser.git"
   },
   "author": "Damien Arrachequesne",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/darrachequesne/socket.io-msgpack-parser/issues"
+    "url": "https://github.com/socketio/socket.io-msgpack-parser/issues"
   },
-  "homepage": "https://github.com/darrachequesne/socket.io-msgpack-parser#readme",
+  "homepage": "https://github.com/socketio/socket.io-msgpack-parser#readme",
   "files": [
     "index.js",
     "index.d.ts"
