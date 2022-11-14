@@ -30,6 +30,7 @@
   },
   "homepage": "https://github.com/darrachequesne/socket.io-msgpack-parser#readme",
   "files": [
-    "index.js"
+    "index.js",
+    "index.d.ts"
   ]
 }
