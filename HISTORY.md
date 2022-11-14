@@ -1,3 +1,35 @@
+# History
+
+## 2022
+
+- [3.0.2](#453-2022-10-15) (Nov 2022)
+
+## 2020
+
+- [3.0.1](#301-2020-10-27) (Oct 2020)
+- [**3.0.0**](#300-2020-10-23) (Oct 2020)
+- [2.2.1](#221-2020-09-28) (Sep 2020)
+
+## 2017
+
+- [2.2.0](#220-2017-08-09) (Aug 2017)
+- [2.1.0](#210-2017-5-29) (May 2017)
+- [**2.0.0**](#200-2017-05-08) (May 2017)
+- [1.0.3](#103-2017-05-04) (May 2017)
+- [1.0.2](#102-2017-05-04) (May 2017)
+- [1.0.1](#101-2017-04-28) (Apr 2017)
+- [**1.0.0**](#100-2017-02-21) (Feb 2017)
+
+
+
+# Release notes
+
+## [3.0.2](https://github.com/socketio/socket.io-msgpack-parser/compare/3.0.1...3.0.2) (2022-11-14)
+
+There is now a `index.d.ts` definition file included in the package.
+
+
+
 ## [3.0.1](https://github.com/socketio/socket.io-msgpack-parser/compare/3.0.0...3.0.1) (2020-10-27)
 
 
@@ -22,13 +54,19 @@
 
 # [2.2.0](https://github.com/socketio/socket.io-msgpack-parser/compare/2.1.0...2.2.0) (2017-08-09)
 
+This release includes notepack.io 2.1.0, which has a much smaller browser bundle.
+
 
 
 # [2.1.0](https://github.com/socketio/socket.io-msgpack-parser/compare/2.0.0...2.1.0) (2017-05-29)
 
+This release removes the transpilation step (babel).
+
 
 
 # [2.0.0](https://github.com/socketio/socket.io-msgpack-parser/compare/1.0.3...2.0.0) (2017-05-08)
+
+An ES5-compliant build is now produced.
 
 
 
@@ -36,7 +74,11 @@
 
 
 
-## [1.0.2](https://github.com/socketio/socket.io-msgpack-parser/compare/1.0.0...1.0.2) (2017-05-04)
+## [1.0.2](https://github.com/socketio/socket.io-msgpack-parser/compare/1.0.1...1.0.2) (2017-05-04)
+
+
+
+## [1.0.1](https://github.com/socketio/socket.io-msgpack-parser/compare/1.0.0...1.0.1) (2017-04-28)
 
 
 
